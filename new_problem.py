@@ -1,11 +1,12 @@
 import os
 import argparse
+import textwrap
 
-def create_new_problem(number, name):
+def create_new_problem(number, name, tree_node):
     folder_path = os.path.join('./', str(number) + '-' + name[0].upper() + name[1:])
     file_path = os.path.join(folder_path, name + '.cpp')
     create_problem_folder(folder_path)
-    create_problem_file(file_path)
+    create_problem_file(file_path, tree_node)
 
 def create_problem_folder(folder_path):
     try:
@@ -14,22 +15,40 @@ def create_problem_folder(folder_path):
     except FileExistsError:
         print(f'Folder \'{folder_path}\' already exists.')
 
-def create_problem_file(file_path):
-    cpp_code = '''\
-#include <bits/stdc++.h>
-using namespace std;
+def create_problem_file(file_path, tree_node=False):
+    include_code = textwrap.dedent('''\
+        #include <bits/stdc++.h>
+        using namespace std;
+    ''')
 
-class Solution {
-public:
-\t/* implement solution here */
-};
+    tree_node_code = textwrap.dedent('''
+        struct TreeNode {
+        \tint val;
+        \tTreeNode *left;
+        \tTreeNode *right;
+        \tTreeNode() : val(0), left(nullptr), right(nullptr) {}
+        \tTreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+        \tTreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+        };
+    ''')
 
-int main() {
-\tSolution sol = Solution();
-\t/* write test case here */
-\treturn 0;
-}
-    '''
+    solution_code = textwrap.dedent('''
+        class Solution {
+        public:
+        \t/* implement solution here */
+        };
+
+        int main() {
+        \tSolution sol = Solution();
+        \t/* write test case here */
+        \treturn 0;
+        }
+    ''')
+
+    cpp_code = include_code
+    if (tree_node):
+        cpp_code += tree_node_code
+    cpp_code += solution_code
 
     with open(file_path, 'w') as file:
         file.write(cpp_code)
@@ -41,7 +60,8 @@ if __name__ == '__main__':
 
     parser.add_argument('--name', type=str, help='Specify problem name', required=True)
     parser.add_argument('--number', type=int, help='Specify problem number', required=True)
+    parser.add_argument('--tree_node', type=bool, help='Generate struct TreeNode', required=False)
 
     args = parser.parse_args()
 
-    create_new_problem(number=args.number, name=args.name)
+    create_new_problem(number=args.number, name=args.name, tree_node=args.tree_node)
