@@ -34,4 +34,4 @@
 .DS_Store
 .vscode
 
-rust/target/
+rust/target/*

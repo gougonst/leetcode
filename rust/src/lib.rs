@@ -1,5 +1,21 @@
 use std::collections::HashMap;
 
+#[derive(PartialEq, Eq, Clone, Debug)]
+pub struct ListNode {
+    pub val: i32,
+    pub next: Option<Box<ListNode>>
+}
+
+impl ListNode {
+    #[inline]
+    fn new(val: i32) -> Self {
+        ListNode {
+            next: None,
+            val
+        }
+    }
+}
+
 pub struct Solution;
 
 impl Solution {
@@ -40,5 +56,29 @@ impl Solution {
             }
         }
         stack.is_empty()
+    }
+
+    // 21-MergeTwoSortedLists
+    pub fn merge_two_lists(list1: Option<Box<ListNode>>, list2: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+        if let None = list1 {
+            return list2;
+        }
+        if let None = list2 {
+            return list1;
+        }
+
+        let merge_list = ListNode::new(0);
+        let mut tail = merge_list;
+
+        while list1.is_some() && list2.is_some() {
+            let list1_val = list1.unwrap().val;
+            let list2_val = list2.unwrap().val;
+
+            if list1_val < list2_val {
+                tail.next = 
+            }
+        }
+
+        merge_list
     }
 }
