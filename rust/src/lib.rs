@@ -60,25 +60,18 @@ impl Solution {
 
     // 21-MergeTwoSortedLists
     pub fn merge_two_lists(list1: Option<Box<ListNode>>, list2: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-        if let None = list1 {
-            return list2;
-        }
-        if let None = list2 {
-            return list1;
-        }
-
-        let merge_list = ListNode::new(0);
-        let mut tail = merge_list;
-
-        while list1.is_some() && list2.is_some() {
-            let list1_val = list1.unwrap().val;
-            let list2_val = list2.unwrap().val;
-
-            if list1_val < list2_val {
-                tail.next = 
+        match (list1, list2) {
+            (None, None) => None, 
+            (Some(list), None) | (None, Some(list)) => Some(list), 
+            (Some(mut first), Some(mut second)) => {
+                if first.val < second.val {
+                    first.next = Self::merge_two_lists(first.next, Some(second));
+                    Some(first)
+                } else {
+                    second.next = Self::merge_two_lists(second.next, Some(first));
+                    Some(second)
+                }
             }
         }
-
-        merge_list
     }
 }
