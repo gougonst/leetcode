@@ -1,7 +1,7 @@
 use rust::Solution;
 
 fn main() {
-    let s = String::from("([])");
-    let ans = Solution::is_valid(s);
+    let v = vec![7, 6, 4, 3, 1];
+    let ans = Solution::max_profit(v);
     println!("{:?}", ans);
 }

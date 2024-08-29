@@ -74,4 +74,15 @@ impl Solution {
             }
         }
     }
+
+    // 121 - Best time to buy and sell stock
+    pub fn max_profit(prices: Vec<i32>) -> i32 {
+        let mut buy = 0;
+        let mut ans = 0;
+        for price in prices.into_iter().skip(1) {
+            ans = ans.max(price - buy);
+            buy = buy.min(price);
+        }
+        ans
+    }
 }
